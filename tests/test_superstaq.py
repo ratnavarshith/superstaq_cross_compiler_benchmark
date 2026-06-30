@@ -14,6 +14,11 @@ from unittest.mock import MagicMock, patch
 import pytest
 from qiskit import QuantumCircuit
 
+# Skip the entire file if qiskit_superstaq is not installed.
+# @patch("qiskit_superstaq.X") resolves the import at decoration time,
+# so without the package every test fails at mock setup rather than being skipped.
+pytest.importorskip("qiskit_superstaq")
+
 from scxb.compile import CompileResult, compile_superstaq
 from scxb.spec import make_circuit
 from scxb.sweep import run_superstaq_sweep
