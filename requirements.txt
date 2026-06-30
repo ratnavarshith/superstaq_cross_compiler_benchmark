@@ -1,0 +1,12 @@
+qiskit>=1.0
+qiskit-aer>=0.13
+numpy
+networkx
+matplotlib
+pandas
+pytest
+
+# SuperstaQ SDK — install for Phase 3 (cross-compiler harness).
+# qiskit-superstaq returns compiled Qiskit circuits so _count_2q/count_ops work unchanged.
+# cirq-superstaq would return Cirq circuits, requiring conversion.
+# qiskit-superstaq
