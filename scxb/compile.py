@@ -7,7 +7,7 @@ we need to compare what each compiler does to the *same* starting circuit.
 
 `compile_superstaq` mirrors the same interface but targets Infleqtion's Sqale
 neutral-atom hardware via the qiskit-superstaq SDK. Both functions populate
-the same CompileResult dataclass, so Phase 4 analysis can do
+the same CompileResult dataclass, so analysis can do
 df.groupby("compiler") directly.
 
 Key difference in the numbers: Sqale's native gate is CZ (not CX/ECR) and its
@@ -40,7 +40,7 @@ class CompileResult:
     family: str
     n_qubits: int
     # Compiler configuration
-    compiler: str       # "qiskit" | "superstaq" (added in Phase 3)
+    compiler: str       # "qiskit" | "superstaq"
     opt_level: int      # Qiskit optimization_level (0–3); -1 for SuperstaQ default
     layout_method: str  # "trivial" | "dense" | "sabre" | "auto" | ""
     seed: int           # transpiler seed; -1 = median-aggregated across seeds
