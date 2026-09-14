@@ -99,7 +99,7 @@ Compiled n in {4, 6, 8} across four circuit families through:
 
 ### The neutral-atom advantage is topology-conditional
 
-SuperstaQ does not universally beat Qiskit. It depends on whether the circuit's connectivity pattern conflicts with heavy-hex.
+SuperstaQ does not universally beat Qiskit. It depends on whether the circuit's connectivity pattern conflicts with heavy-hex. The 27-37% Qiskit-routing-overhead numbers below are from the FakeSherbrooke (127-qubit heavy-hex) run described above; Qiskit's side of every comparison here is specific to that target topology, and would differ against a different coupling map.
 
 | Condition | Winner | Example |
 | --- | --- | --- |
