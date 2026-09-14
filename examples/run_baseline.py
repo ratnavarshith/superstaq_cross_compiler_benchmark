@@ -1,8 +1,8 @@
 """CLI: Qiskit transpiler baseline sweep for the cross-compiler benchmark.
 
-This is the Phase 2 baseline — run every circuit family through Qiskit's
-transpiler at varying optimization levels and layout methods, record what
-comes out, and save the results for Phase 3 comparison against SuperstaQ.
+Runs every circuit family through Qiskit's transpiler at varying optimization
+levels and layout methods, records what comes out, and saves the results for
+a future cross-compiler comparison against SuperstaQ.
 
 Examples (PowerShell):
 
