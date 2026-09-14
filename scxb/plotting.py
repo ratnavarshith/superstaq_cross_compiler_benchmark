@@ -1,16 +1,19 @@
 """Plots for the cross-compiler baseline results.
 
-Phase 2 adds three plots specific to this project's research question:
+Three baseline plots work on Qiskit-only data:
 
-  plot_routing_overhead_by_connectivity  — the key new plot. For QAOA circuits
-      shows routing overhead vs graph connectivity family (line < ring < ER <
-      complete), making the heavy-hex SWAP cost visible before we compare it
-      against SuperstaQ in Phase 3.
+  plot_routing_overhead_by_connectivity — routing overhead vs QAOA graph
+      connectivity family (line < ring < ER < complete), making the
+      heavy-hex SWAP cost visible.
 
-  plot_two_q_inflation  — 2Q gates before vs after compilation for each
+  plot_two_q_inflation — 2Q gates before vs after compilation for each
       circuit family, showing how much the transpiler inflates each type.
 
-  plot_compile_time  — wall time vs qubit count per family+layout combination.
+  plot_compile_time — wall time vs qubit count per family+layout combination.
+
+Three more (plot_qaoa_overhead_vs_connectivity, plot_overhead_by_family,
+plot_compile_time_crosscompiler) kick in once SuperstaQ rows are present and
+overlay both compilers directly.
 """
 from __future__ import annotations
 
@@ -25,7 +28,7 @@ from .compile import CompileResult
 
 _GRAPH_ORDER = ("line", "ring", "er", "complete", "random_regular")
 
-# Colors and labels shared by all Phase 4 cross-compiler plots
+# Colors and labels shared by the cross-compiler plots
 _C_COLOR = {"qiskit": "#1f77b4", "superstaq": "#ff7f0e"}
 _C_LABEL = {
     "qiskit":    "Qiskit  (heavy-hex / ECR)",
@@ -82,8 +85,8 @@ def plot_routing_overhead_by_connectivity(
     This is the headline plot: it shows how much SWAP overhead the Qiskit
     transpiler imposes for each connectivity class. The ordering
     line < ring < ER < complete follows from edge density. Neutral-atom
-    hardware can rearrange atoms, so this overhead is hardware-dependent —
-    the cross-compiler comparison (Phase 3) will overlay SuperstaQ numbers.
+    hardware can rearrange atoms, so this overhead is hardware-dependent; see
+    plot_qaoa_overhead_vs_connectivity for the side-by-side with SuperstaQ.
     """
     df = _to_df(results_or_path)
     if df.empty:
@@ -235,7 +238,7 @@ def plot_qaoa_overhead_vs_connectivity(
     results_or_path,
     output_dir: "str | Path",
 ) -> "Path | None":
-    """Headline Phase 4 plot: QAOA routing overhead by graph connectivity, both compilers.
+    """Headline plot: QAOA routing overhead by graph connectivity, both compilers.
 
     Shows one sub-plot per n, with Qiskit (solid) and SuperstaQ (dashed) overhead
     on the same axes. The ring case is where topology-conditional advantage appears:
@@ -554,12 +557,12 @@ def generate_all(
     results_or_path,
     output_dir: "str | Path",
 ) -> list[Path]:
-    """Run Phase 2 plots, and Phase 4 cross-compiler plots when both compilers present."""
+    """Run the baseline plots, plus cross-compiler plots when both compilers are present."""
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     paths: list[Path] = []
 
-    # Phase 2 plots (Qiskit baseline; work on single-compiler data too)
+    # Baseline plots (work on single-compiler data too)
     for fn in (
         plot_routing_overhead_by_connectivity,
         plot_two_q_inflation,
@@ -569,7 +572,7 @@ def generate_all(
         if p is not None:
             paths.append(p)
 
-    # Phase 4 cross-compiler plots — only when both compilers are in the data
+    # Cross-compiler plots — only when both compilers are in the data
     df = _to_df(results_or_path)
     if df["compiler"].nunique() >= 2:
         for fn in (
